@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="WK.WebForm1" %>
+﻿<%@ Page Title="Login" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="WK.WebForm1" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
@@ -26,7 +26,7 @@
                                 Password:
                             </div>
                             <div class="col-md-6" style="text-align: left">
-                                <asp:TextBox ID="TextPassword" runat="server" Class="form-control" TextMode="Password"></asp:TextBox>
+                                <asp:TextBox ID="txtPassword" runat="server" Class="form-control" TextMode="Password"></asp:TextBox>
                             </div>
                         </div>
                         <br />
@@ -46,7 +46,7 @@
                         <br />
                         <div class="row">
                             <div class="col-md-6" style="text-align: right">
-                                <asp:Button ID="btnLogin" runat="server" Text="Login" Class="btn btn-primary" />
+                                <asp:Button ID="btnLogin" runat="server" Text="Login" Class="btn btn-primary" OnClick="btnLogin_Click" />
                             </div>
                             <div class="col-md-6" style="text-align: left">
                                 <asp:Button ID="Cancel" runat="server" Text="Cancel" Class="btn btn-danger" />
