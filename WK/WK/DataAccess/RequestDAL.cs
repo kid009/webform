@@ -32,7 +32,7 @@ namespace WK.DataAccess
                 transection = connect.BeginTransaction(IsolationLevel.ReadCommitted);
 
                 command.CommandType = CommandType.Text;
-                command.CommandText = "INSERT INTO REQUEST (REQUEST_ID, APPROVE_ID, [SUBJECT], [DESCRIPTION], CREATE_BY, CREATE_DATE, PATH_FILE) VALUES('"+data.RequestID+"', '"+data.ApproveID+"', '"+data.Subject+"', '"+data.Description+"', '"+data.CreateBy+"', CONVERT(datetime, '"+DateTime.Now.ToString("dd/MM/yyyy")+"', 103), 'PATH_FILE'); ";
+                command.CommandText = "INSERT INTO REQUEST (REQUEST_ID, APPROVE_ID, [SUBJECT], [DESCRIPTION], CREATE_BY, CREATE_DATE, PATH_FILE) VALUES('"+data.RequestID+"', '"+data.ApproveID+"', '"+data.Subject+"', '"+data.Description+"', '"+data.CreateBy+"', CONVERT(datetime, '"+DateTime.Now.ToString("dd/MM/yyyy")+"', 103), '"+data.Pate_File+"'); ";
                 command.Transaction = transection;
                 #endregion
 
