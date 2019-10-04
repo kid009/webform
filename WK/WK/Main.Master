@@ -15,9 +15,7 @@
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 
     <script>
-        function Message_Show(message) {
-            alert(message);
-        }
+        
     </script>
 
     <script src="../Scripts/jsCode.js"></script>

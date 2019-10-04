@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using WK.DataAccess;
+using WK.Data;
 
 namespace WK.Report
 {
@@ -11,6 +13,136 @@ namespace WK.Report
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsPostBack)
+            {
+                if (Session["username"] != null)
+                {
+                    pnl_eidt.Visible = false;
+
+                    string username = Session["username"].ToString();
+
+                    HiddenField1.Value = username;
+
+                    DisplayInfo(username);
+
+                    DisplayRequest(username);
+                }
+            }
+            else
+            {
+
+            }
+        }//Page_Load
+
+        protected string GetHost(Object file)
+        {
+            string fullpath = "";
+
+            if (file != null)
+            {
+                if (file.ToString() != "")
+                {
+                    fullpath = "../DisplayPDF.aspx?url=" + file.ToString();
+                }
+            }
+            return fullpath;
+        }//GetHost
+
+        protected void btnEdit_Click(object sender, EventArgs e)
+        {
+            pnl_eidt.Visible = true;
+
+            Button btnEdit = sender as Button;
+
+            GridViewRow gRow = (GridViewRow)btnEdit.NamingContainer;
+
+            string request_id = ResultGridView.DataKeys[gRow.RowIndex].Value.ToString();
+
+            if (request_id != "")
+            {
+                RequestDAL dal = new RequestDAL();
+
+                RequestData data = dal.GetRequestId(request_id);
+
+                if (data != null)
+                {
+                    txtRequestId.Text = data.RequestID;
+                    txtSubject.Text = data.Subject;
+                    txtDescription.Text = data.Description;
+                    txtNote.Text = data.Note;
+                }
+            }
+        }
+
+        protected void btnDelete_Click(object sender, EventArgs e)
+        {
+            pnl_eidt.Visible = true;
+        }
+
+        private void DisplayInfo(string username)
+        {
+            UserDAL dal = new UserDAL();
+
+            Info data = dal.GetInfo(username);
+
+            if (data != null)
+            {
+                lbUserName.Text = data.UserName;
+                lbName.Text = data.Name;
+                lbPosition.Text = data.Position;
+                lbDept.Text = data.Dept;
+            }
+        }
+
+        private void DisplayRequest(string username)
+        {
+            RequestDAL dal = new RequestDAL();
+
+            List<RequestData> listresult = dal.GetRequest(username);
+
+            if (listresult != null && listresult.Count > 0)
+            {
+                ResultGridView.DataSource = listresult;
+                ResultGridView.DataBind();
+            }
+        }
+
+        protected void btnSave_Click(object sender, EventArgs e)
+        {
+            RequestData data = new RequestData();
+
+            data.RequestID = txtRequestId.Text;
+            data.Subject = txtSubject.Text;
+            data.Description = txtDescription.Text;
+            data.Note = txtNote.Text;
+            data.Status = "Reject";
+
+            RequestDAL dal = new RequestDAL();
+
+            #region update request table
+
+            bool check_request = dal.RequestUpdate(data);
+
+            #endregion
+
+            #region update request_reject table
+
+            bool check_request_reject = dal.RequestRejectInsert(data);
+
+            #endregion
+
+            if (check_request == true && check_request_reject == true)
+            {
+                this.Page.ClientScript.RegisterClientScriptBlock(typeof(Page), "myscript", "Message_Show('Save_success')", true);
+
+                string username = HiddenField1.Value;
+
+                DisplayRequest(username);
+            }
+            else
+            {
+                this.Page.ClientScript.RegisterClientScriptBlock(typeof(Page), "myscript", "Message_Show('Error')", true);
+            }
 
         }
     }

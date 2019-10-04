@@ -34,7 +34,9 @@ namespace WK.Data //สร้าง class จากฐานข้อมูล
         public string Description { get; set; }
         public string CreateBy { get; set; }
         public string CreateDate { get; set; }
-        public string Pate_File { get; set; }
+        public string Path_File { get; set; }
+        public string Note { get; set; }
+        public string Status { get; set; }
     }
 
 }

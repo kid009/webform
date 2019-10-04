@@ -66,7 +66,7 @@ namespace WK
                 data.Subject = txtSubject.Text;
                 data.Description = txtDescription.Text;
                 data.CreateBy = hdUserName.Value;
-                data.Pate_File = path_file + fileUpload.PostedFile.FileName;
+                data.Path_File = path_file + fileUpload.PostedFile.FileName;
 
                 RequestDAL dal = new RequestDAL();
 
