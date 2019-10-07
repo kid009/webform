@@ -76,7 +76,30 @@ namespace WK.Report
 
         protected void btnDelete_Click(object sender, EventArgs e)
         {
-            pnl_eidt.Visible = true;
+            //เมื่อกดปุ่ม btnDelete ให้ฟอร์มแก้ไขหาย
+            pnl_eidt.Visible = false;
+            //เมื่อกดปุ่มลบ จะแปลงค่าให้อยู่ในรูปแบบของ ImageButton
+            Button btnImg = sender as Button;
+            //เเปลง ImageButton ให้อยู่ในรูปของ GridViewRow
+            GridViewRow gRow = (GridViewRow)btnImg.NamingContainer;
+            //get ค่า DataKeyNames="RequestID" 
+            string request_id = ResultGridView.DataKeys[gRow.RowIndex].Value.ToString();
+
+            if (request_id != "")
+            {
+                RequestDAL dal = new RequestDAL();
+
+                bool cehck_delete = dal.RequestDelete(request_id);
+
+                if (cehck_delete == true)
+                {
+                    this.Page.ClientScript.RegisterClientScriptBlock(typeof(Page), "myscript", "Message_Show('Delete_Success')", true);
+
+                    string username = HiddenField1.Value;
+
+                    DisplayRequest(username);
+                }
+            }
         }
 
         private void DisplayInfo(string username)

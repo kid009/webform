@@ -359,6 +359,67 @@ namespace WK.DataAccess
             return result;
         }
 
+        public bool RequestDelete(string request_id)
+        {
+            int count = 0;
 
+            bool result = false;
+
+            SqlCommand command = new SqlCommand();
+            SqlConnection connect = null;
+            SqlTransaction transection;
+
+            try
+            {
+                #region 1.การเชื่อมต่อฐานข้อมูล
+                connect = this.GetConnection();
+                command.Connection = connect;
+                #endregion
+
+                #region 2.การยิง query
+                transection = connect.BeginTransaction(IsolationLevel.ReadCommitted);
+
+                command.CommandType = CommandType.Text;
+                command.CommandText = "DELETE FROM REQUEST WHERE REQUEST_ID = '"+ request_id + "' ";
+
+                command.Transaction = transection;
+                #endregion
+
+                #region 3.การรีเทินร์ผลลัพท์
+                count = command.ExecuteNonQuery();
+
+                if (count > 0)
+                {
+                    result = true;
+                    transection.Commit();
+                }
+                else
+                {
+                    result = false;
+                    transection.Rollback();
+                }
+
+                #endregion
+            }//try
+            catch (Exception ex)
+            {
+                string x = ex.Message;
+            }//catch
+            finally
+            {
+                if (command != null)
+                {
+                    command = null;
+                }
+
+                if (connect != null && connect.State == ConnectionState.Open)
+                {
+                    connect.Close();
+                    connect = null;
+                }
+            }//finally
+
+            return result;
+        }
     }
 }

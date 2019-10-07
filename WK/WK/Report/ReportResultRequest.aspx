@@ -1,5 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="ReportResultRequest.aspx.cs" Inherits="WK.Report.ReportResultRequest" %>
 
+<%@ Register Assembly="DevExpress.Web.v15.2, Version=15.2.10.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web" TagPrefix="dx" %>
+
 <%@ Register assembly="DevExpress.Web.v14.1, Version=14.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web.ASPxEditors" tagprefix="dx" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -35,6 +37,7 @@
                         <td>Dept</td>
                         <th>
                             <asp:Label ID="lbDept" runat="server" Text=""></asp:Label>
+                <asp:HiddenField ID="HiddenField1" runat="server" />
                         </th>
                     </tr>
                 </table>
@@ -46,7 +49,7 @@
 
         <div class="row">
             <div class="col-lg-3">
-                <asp:HiddenField ID="HiddenField1" runat="server" />
+                
             </div>
             <div class="col-lg-9">
             </div>
