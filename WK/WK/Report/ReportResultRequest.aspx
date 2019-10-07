@@ -48,10 +48,14 @@
         <br />
 
         <div class="row">
-            <div class="col-lg-3">
-                
+            <div class="col-lg-5">
+                <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
             </div>
-            <div class="col-lg-9">
+            <div class="col-lg-7">
+                <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+                <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
+                <asp:Button ID="Button1" runat="server" Text="Button" />
+                <ajaxToolkit:CalendarExtender ID="CalendarExtender1" runat="server" Format="dd/MM/yyyy" TargetControlID="txtdt" PopupButtonID="Button1" />
             </div>
         </div>
 
