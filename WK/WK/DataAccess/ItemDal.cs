@@ -28,7 +28,7 @@ namespace WK.DataAccess
 
                 #region 2. การยิง query sql
                 command.CommandType = CommandType.Text;
-                command.CommandText = " SELECT [CODE] ,[NAME] ,[PRICE] FROM [DB_WORKFLOW].[dbo].[ITEM] ";
+                command.CommandText = " SELECT [CODE] ,[NAME] ,[PRICE] FROM [ITEM] ";
                 #endregion
 
                 #region 3. รีเทินผลลัพท์

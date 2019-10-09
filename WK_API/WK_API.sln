@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.645
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WK_API", "WK_API\WK_API.csproj", "{534531E6-B80A-42DB-8A29-8C9E99DC4B6D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{534531E6-B80A-42DB-8A29-8C9E99DC4B6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{534531E6-B80A-42DB-8A29-8C9E99DC4B6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{534531E6-B80A-42DB-8A29-8C9E99DC4B6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{534531E6-B80A-42DB-8A29-8C9E99DC4B6D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9BC87030-D28B-4F5D-A046-B9C3C4DD9678}
+	EndGlobalSection
+EndGlobal

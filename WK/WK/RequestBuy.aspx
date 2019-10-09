@@ -75,6 +75,11 @@
                         <asp:Button ID="btnSaveProduct" runat="server" Text="SaveProduct" OnClick="btnSaveProduct_Click" CssClass="btn btn-success" />
                         <asp:Label ID="lblStatus" runat="server" Text=""></asp:Label> 
                         <asp:Button ID="btnLoadDataService" runat="server" Text="Load Data Service" CssClass="btn btn-success" OnClick="btnLoadDataService_Click" />
+                        &nbsp;<asp:DropDownList ID="ddlApi" runat="server" CssClass="Dropdown" AutoPostBack="true" OnSelectedIndexChanged="ddlApi_SelectedIndexChanged">
+                            <asp:ListItem Value="0">Choose API</asp:ListItem>
+                            <asp:ListItem Value="1">API Request All</asp:ListItem>
+                            <asp:ListItem Value="2">API Request By Username</asp:ListItem>
+                        </asp:DropDownList>
                     </th>
                 </tr>
                 <tr>

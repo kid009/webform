@@ -12,6 +12,8 @@ using System.Data;
 using WK.WK_SERVICE;
 using Newtonsoft.Json;
 using System.Xml.Serialization;
+using System.Net;
+using System.Web.Script.Serialization;
 
 namespace WK
 {   
@@ -177,6 +179,40 @@ namespace WK
                         btnLoadDataService.Enabled = false;
                     }
                 }
+            }
+
+        }
+
+        protected void ddlApi_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ddlApi.SelectedItem.Value == "1")
+            {
+                string url = "http://localhost:54327/api/req";
+
+                WebClient client = new WebClient();
+
+                string data = client.DownloadString(url);
+
+                JavaScriptSerializer serializer = new JavaScriptSerializer(); //create object JavaScriptSerializer
+
+                var deSerializerResult = serializer.Deserialize<List<RequestData>>(data); // change string to RequestData
+
+                List<RequestData> listData = deSerializerResult as List<RequestData>;
+            }
+
+            if (ddlApi.SelectedItem.Value == "2")
+            {
+                string url = "http://localhost:54327/api/req?name=man001";
+
+                WebClient client = new WebClient();
+
+                string data = client.DownloadString(url);
+
+                JavaScriptSerializer serializer = new JavaScriptSerializer(); //create object JavaScriptSerializer
+
+                var deSerializerResult = serializer.Deserialize<List<RequestData>>(data); // change string to RequestData
+
+                List<RequestData> listData = deSerializerResult as List<RequestData>;
             }
 
         }
