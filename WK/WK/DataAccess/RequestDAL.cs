@@ -18,6 +18,68 @@ namespace WK.DataAccess
 
             bool result = false;
 
+            SqlCommand command = new SqlCommand();
+            SqlConnection connect = null;
+            SqlTransaction transection;
+
+            try
+            {
+                #region 1.การเชื่อมต่อฐานข้อมูล
+                connect = this.GetConnection();
+                command.Connection = connect;
+                #endregion
+
+                #region 2.การยิง query
+                transection = connect.BeginTransaction(IsolationLevel.ReadCommitted);
+
+                command.CommandType = CommandType.Text;
+                command.CommandText = "INSERT INTO REQUEST (REQUEST_ID, APPROVE_ID, [SUBJECT], [DESCRIPTION], CREATE_BY, CREATE_DATE, PATH_FILE) VALUES('" + data.RequestID + "', '" + data.ApproveID + "', '" + data.Subject + "', '" + data.Description + "', '" + data.CreateBy + "', CONVERT(datetime, '" + DateTime.Now.ToString("dd/MM/yyyy") + "', 103), '" + data.Path_File + "'); ";
+                command.Transaction = transection;
+                #endregion
+
+                #region 3.การรีเทินร์ผลลัพท์
+                count = command.ExecuteNonQuery();
+
+                if (count > 0)
+                {
+                    result = true;
+                    transection.Commit();
+                }
+                else
+                {
+                    result = false;
+                    transection.Rollback();
+                }
+
+                #endregion
+            }//try
+            catch (Exception ex)
+            {
+                string x = ex.Message;
+            }//catch
+            finally
+            {
+                if (command != null)
+                {
+                    command = null;
+                }
+
+                if (connect != null && connect.State == ConnectionState.Open)
+                {
+                    connect.Close();
+                    connect = null;
+                }
+            }//finally
+
+            return result;
+        }
+
+        public bool RequestInsert(RequestData data, string req_Id)
+        {
+            int count = 0;
+
+            bool result = false;
+
             SqlCommand command = new SqlCommand();          
             SqlConnection connect = null;
             SqlTransaction transection;
@@ -33,7 +95,7 @@ namespace WK.DataAccess
                 transection = connect.BeginTransaction(IsolationLevel.ReadCommitted);
 
                 command.CommandType = CommandType.Text;
-                command.CommandText = "INSERT INTO REQUEST (REQUEST_ID, APPROVE_ID, [SUBJECT], [DESCRIPTION], CREATE_BY, CREATE_DATE, PATH_FILE) VALUES('"+data.RequestID+"', '"+data.ApproveID+"', '"+data.Subject+"', '"+data.Description+"', '"+data.CreateBy+"', CONVERT(datetime, '"+DateTime.Now.ToString("dd/MM/yyyy")+"', 103), '"+data.Path_File+"'); ";
+                command.CommandText = "INSERT INTO REQUEST (REQUEST_ID, APPROVE_ID, [SUBJECT], [DESCRIPTION], CREATE_BY, CREATE_DATE, PATH_FILE) VALUES('"+ req_Id + "', '"+data.ApproveID+"', '"+data.Subject+"', '"+data.Description+"', '"+data.CreateBy+"', CONVERT(datetime, '"+DateTime.Now.ToString("dd/MM/yyyy")+"', 103), '"+data.Path_File+"'); ";
                 command.Transaction = transection;
                 #endregion
 
@@ -89,21 +151,9 @@ namespace WK.DataAccess
                 command.Connection = connect;
                 #endregion
 
-                #region 2. การยิง query sql
-                
+                #region 2. การยิง query sql               
                 command.CommandType = CommandType.Text;
                 command.CommandText = "select * from request where Approve_id = '"+username+"' ";
-
-                //command.CommandType = CommandType.StoredProcedure;
-                //command.CommandText = "GetRequest";
-
-                //SqlParameter param = new SqlParameter();
-
-                //param = new SqlParameter("@UserName", username);
-                //param.Direction = ParameterDirection.Input;
-                //param.DbType = DbType.String;
-
-                //command.Parameters.Add(param);
                 #endregion
 
                 #region 3. รีเทินผลลัพท์
@@ -117,13 +167,14 @@ namespace WK.DataAccess
                     {
                         RequestData data = new RequestData();
 
-                        data.RequestID = reader["request_id"].ToString().Trim();
-                        data.ApproveID = reader["approve_id"].ToString().Trim();
-                        data.Subject = reader["subject"].ToString().Trim();
-                        data.Description = reader["description"].ToString().Trim();
+                        data.RequestID = reader["request_id"].ToString();
+                        data.ApproveID = reader["approve_id"].ToString();
+                        data.Subject = reader["subject"].ToString();
+                        data.Description = reader["description"].ToString();
                         data.CreateBy = reader["create_by"].ToString().Trim();
-                        data.CreateDate = Convert.ToDateTime(reader["create_date"].ToString().Trim()).ToString("dd/MM/yyyy");
-                        data.Path_File = reader["path_file"].ToString().Trim();
+                        //data.CreateDate = Convert.ToDateTime(reader["create_date"].ToString()).ToString("dd/MM/yyyy");
+                        data.CreateDate = reader["create_date"].ToString();
+                        data.Path_File = reader["path_file"].ToString();
 
                         listresult.Add(data);
                     }
@@ -154,6 +205,148 @@ namespace WK.DataAccess
 
             }
             return listresult;
+        }//GetRequest
+
+        public List<RequestData> GetRequest(string[] data_arr)
+        {
+            SqlCommand command = new SqlCommand();
+            SqlDataReader reader = null;
+            SqlConnection connect = null;
+
+            List<RequestData> listresult = null;
+
+            try
+            {
+                #region 1. เชื่อมต่อฐานข้อมูล
+                connect = this.GetConnection();
+                command.Connection = connect;
+                #endregion
+
+                #region 2. การยิง query sql
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetRequestByCondition";
+
+                SqlParameter parameterReqId = new SqlParameter();
+                parameterReqId = new SqlParameter("@ReqId", data_arr[0]);
+                parameterReqId.Direction = ParameterDirection.Input;
+                parameterReqId.DbType = DbType.String;
+                command.Parameters.Add(parameterReqId);
+
+                SqlParameter parameterSubject = new SqlParameter();
+                parameterSubject = new SqlParameter("@Subject", data_arr[1]);
+                parameterSubject.Direction = ParameterDirection.Input;
+                parameterSubject.DbType = DbType.String;
+                command.Parameters.Add(parameterSubject);
+
+                SqlParameter parameterDateNow = new SqlParameter();
+                parameterDateNow = new SqlParameter("@DateNow", data_arr[2]);
+                parameterDateNow.Direction = ParameterDirection.Input;
+                parameterDateNow.DbType = DbType.String;
+                command.Parameters.Add(parameterDateNow);
+
+                #endregion
+
+                #region 3. รีเทินผลลัพท์
+                reader = command.ExecuteReader();
+
+                if (reader != null && reader.HasRows)
+                {
+                    listresult = new List<RequestData>();
+
+                    while (reader.Read())
+                    {
+                        RequestData data = new RequestData();
+
+                        data.RequestID = reader["request_id"].ToString();
+                        data.ApproveID = reader["approve_id"].ToString();
+                        data.Subject = reader["subject"].ToString();
+                        data.Description = reader["description"].ToString();
+                        data.CreateBy = reader["create_by"].ToString();
+                        data.CreateDate = Convert.ToDateTime(reader["create_date"].ToString()).ToString("dd/MM/yyyy");
+                        data.Path_File = reader["path_file"].ToString();
+
+                        listresult.Add(data);
+                    }
+                }
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                string x = ex.Message;
+            }
+            finally
+            {
+                if ((reader != null) && (!reader.IsClosed))
+                {
+                    reader = null;
+                }
+
+                if (command != null)
+                {
+                    command = null;
+                }
+
+                if ((connect != null) && (connect.State == ConnectionState.Open))
+                {
+                    connect.Close();
+                    connect = null;
+                }
+
+            }
+            return listresult;
+        }//GetRequest
+
+        public DataSet GetRequest(string dt, object k)
+        {
+            DataSet resutl = new DataSet();
+            SqlDataAdapter adapter = new SqlDataAdapter();
+
+            SqlCommand command = new SqlCommand();
+            SqlConnection connect = null;           
+
+            try
+            {
+                #region 1. เชื่อมต่อฐานข้อมูล
+                connect = this.GetConnection();
+                command.Connection = connect;
+                #endregion
+
+                #region 2. การยิง query sql               
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetRequestAll";
+
+                SqlParameter param = new SqlParameter();
+                param = new SqlParameter("@DateNow", dt);
+                param.Direction = ParameterDirection.Input;
+                param.DbType = DbType.String;
+
+                command.Parameters.Add(param);
+                #endregion
+
+                #region 3. รีเทินผลลัพท์
+                adapter.SelectCommand = command;
+                adapter.Fill(resutl);
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                string x = ex.Message;
+            }
+            finally
+            {
+                if (command != null)
+                {
+                    command = null;
+                }
+
+                if ((connect != null) && (connect.State == ConnectionState.Open))
+                {
+                    connect.Close();
+                    connect = null;
+                }
+
+            }
+            return resutl;
         }//GetRequest
 
         public RequestData GetRequestId(string request_id)
@@ -421,5 +614,6 @@ namespace WK.DataAccess
 
             return result;
         }
+
     }
 }

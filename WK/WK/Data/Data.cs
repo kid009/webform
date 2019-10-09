@@ -22,11 +22,17 @@ namespace WK.Data //สร้าง class จากฐานข้อมูล
     public class RequestData
     {
         private string code = "REQ" + DateTime.Now.Ticks.ToString().Substring(DateTime.Now.Ticks.ToString().Length - 5, 5);
+        private string code_stock = "RST" + DateTime.Now.Ticks.ToString().Substring(DateTime.Now.Ticks.ToString().Length - 5, 5);
 
         public string RequestID
         {
             get { return code; }
             set { code = value; }
+        }
+        public string RequestID_Stock
+        {
+            get { return code_stock; }
+            set { code_stock = value; }
         }
 
         public string ApproveID { get; set; }
@@ -37,6 +43,13 @@ namespace WK.Data //สร้าง class จากฐานข้อมูล
         public string Path_File { get; set; }
         public string Note { get; set; }
         public string Status { get; set; }
+    }
+
+    public class Item
+    {
+        public string Code { get; set; }
+        public string Name { get; set; }
+        public string Price { get; set; }
     }
 
 }

@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using WK.DataAccess;
 using WK.Data;
+using System.Data;
 
 namespace WK.Report
 {
@@ -72,6 +73,7 @@ namespace WK.Report
                     txtNote.Text = data.Note;
                 }
             }
+
         }
 
         protected void btnDelete_Click(object sender, EventArgs e)
@@ -165,6 +167,55 @@ namespace WK.Report
             else
             {
                 this.Page.ClientScript.RegisterClientScriptBlock(typeof(Page), "myscript", "Message_Show('Error')", true);
+            }
+
+        }
+
+        protected void btnSearch_Click(object sender, EventArgs e)
+        {
+            string[] data_arr = new string[3];
+
+            data_arr[0] = txtSearch.Text;
+            data_arr[1] = txtSearcjNameSubject.Text;
+            data_arr[2] = txtDt.Text;
+
+            RequestDAL dal = new RequestDAL();
+
+            List<RequestData> listResult = dal.GetRequest(data_arr);
+
+            if (listResult != null && listResult.Count > 0)
+            {
+                ResultGridView.DataSource = listResult;
+                ResultGridView.DataBind();
+            }
+        }
+
+        protected void btnLinQ_Click(object sender, EventArgs e)
+        {
+            RequestDAL dal = new RequestDAL();
+
+            string dt = txtDt.Text;
+
+            DataSet ds = dal.GetRequest(dt, null);
+
+            if (ds != null && ds.Tables[0].Rows.Count > 0)
+            {
+                DataTable dataTB = ds.Tables[0];
+
+                var dataRow = dataTB.AsEnumerable().Where(x => x.Field<string>("REQUEST_ID") == txtSearch.Text);
+
+                DataTable result = dataRow.CopyToDataTable<DataRow>();
+
+                if (result != null && result.Rows.Count > 0)
+                {
+                    ResultGridView.DataSource = result;
+                    ResultGridView.DataBind();
+                }
+                else
+                {
+                    ResultGridView.DataSource = null;
+                    ResultGridView.DataBind();
+                }
             }
 
         }

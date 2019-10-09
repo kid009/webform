@@ -38,9 +38,28 @@
         </div>
 
         <div class="row">
-            <div class="well">
+
+            <ul class="nav nav-tabs">
+                <li role="presentation" class="active">
+                    <a href="Request.aspx">
+                        รายละเอียดทั่วไป
+                    </a>
+                </li>
+                <li role="presentation">
+                    <a href="RequestBuy.aspx">
+                        รายละเอียดสั่งซื้อสินค้า
+                    </a>
+                </li>
+            </ul>
+
+            <br />
+
+
+
+
+            <%--<div class="well">
                 <h1>รายละเอียดคำขอ</h1>
-            </div>
+            </div>--%>
 
             <table class="table table-bordered">
                 <tr>

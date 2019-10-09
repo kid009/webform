@@ -47,18 +47,58 @@
 
         <br />
 
+        <!-- Search -->
         <div class="row">
-            <div class="col-lg-5">
-                <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
+            <div class="col-lg-5" style="text-align:right">
+                <asp:Label ID="lbSearch" runat="server" Text="รหัสคำขอ : "></asp:Label>
             </div>
-            <div class="col-lg-7">
-                <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
-                <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
-                <asp:Button ID="Button1" runat="server" Text="Button" />
-                <ajaxToolkit:CalendarExtender ID="CalendarExtender1" runat="server" Format="dd/MM/yyyy" TargetControlID="txtdt" PopupButtonID="Button1" />
+            <div class="col-lg-7" style="text-align:left">
+                <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control"></asp:TextBox>
             </div>
         </div>
 
+        <br />
+
+        <div class="row">
+            <div class="col-lg-5" style="text-align:right">
+                <asp:Label ID="lbNameSearch" runat="server" Text="ชื่อเรื่อง : "></asp:Label>
+            </div>
+            <div class="col-lg-7" style="text-align:left">
+                <asp:TextBox ID="txtSearcjNameSubject" runat="server" CssClass="form-control"></asp:TextBox>
+            </div>
+        </div>
+
+        <br />
+
+        <div class="row">
+            <div class="col-lg-5" style="text-align:right">
+                <asp:Label ID="Label1" runat="server" Text="วันที่ส่งคำขอ : "></asp:Label>
+            </div>
+            <div class="col-lg-7" style="text-align:left">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <asp:TextBox ID="txtDt" runat="server" CssClass="form-control"></asp:TextBox>
+                    </div>
+                    <div class="col-lg-6">
+                        <asp:Button ID="btnCalendar" runat="server" Text="Calendar" CssClass="btn btn-success" />
+                        <ajaxToolkit:CalendarExtender ID="CalendarId" runat="server" PopupButtonID="btnCalendar" TargetControlID="txtDt" Format="dd-MM-yyyy"></ajaxToolkit:CalendarExtender>
+                    </div>
+                </div>
+            </div>
+        </div><!-- Search -->
+
+        <br />
+               
+        <div class="row">
+            <div class="col-lg-5" style="text-align:right">
+                <asp:Button ID="btnSearch" runat="server" Text="ค้นหา" CssClass="btn btn-primary" OnClick="btnSearch_Click" />
+                <asp:Button ID="btnLinQ" runat="server" Text="Search LinQ" CssClass="btn btn-primary" OnClick="btnLinQ_Click"  />
+            </div>
+            
+            <div class="col-lg-7" style="text-align:left">
+                <asp:Button ID="btnCancelSearch" runat="server" Text="ยกเลิก" CssClass="btn btn-danger" />
+            </div>
+        </div><!-- Search -->
         <br />
 
         <div class="row">
@@ -97,7 +137,6 @@
 
             </asp:GridView>
         </div>
-
 
         <asp:Panel ID="pnl_eidt" Visible="false" runat="server">
 
@@ -147,6 +186,5 @@
         </asp:Panel>
 
     </div>
-
 
 </asp:Content>
